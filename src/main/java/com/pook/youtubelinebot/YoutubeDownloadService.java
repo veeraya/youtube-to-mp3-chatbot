@@ -78,11 +78,10 @@ public class YoutubeDownloadService {
     }
 
     private void convertVidToMp3(String videoPath, String mp3Path) throws IOException {
-        ProcessBuilder builder = new ProcessBuilder("ffmpeg", "-i", videoPath, "-q:a", "0", "-map", "a", mp3Path);
+        ProcessBuilder builder = new ProcessBuilder("ffmpeg", "-i", videoPath, "-codec:a", "libmp3lame", "-q:a", "0", "-map", "a", mp3Path);
+        logger.info("Running process: [{}]", builder.command());
         builder.redirectErrorStream(true);
         final Process process = builder.start();
-
-        logger.info("Running process: []", process);
         BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line = null;
         try {
