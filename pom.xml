@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>youtube-line-bot</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Youtube Line Bot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -50,7 +50,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.9.6</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -43,9 +43,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UncheckedIOException;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -62,6 +62,8 @@ public class KitchenSinkController {
     private static final Logger log = LoggerFactory.getLogger(KitchenSinkController.class);
     @Autowired
     private LineMessagingClient lineMessagingClient;
+    @Autowired
+    private YoutubeDownloadService youtubeDownloadService;
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
@@ -178,7 +180,7 @@ public class KitchenSinkController {
             log.info("Sent messages: {}", apiResponse);
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
-        }
+        }//
     }
 
     private void replyText(String replyToken, String message) {
@@ -215,6 +217,14 @@ public class KitchenSinkController {
         String text = content.getText();
 
         log.info("Got text message from {}: {}", replyToken, text);
+        if (text.contains("youtu")) {
+            try {
+                String downloadLink = youtubeDownloadService.getMp3LinkFromVideo(text);
+                this.replyText(replyToken, downloadLink);
+            } catch (Exception e) {
+                this.replyText(replyToken, e.getMessage());
+            }
+        }
         switch (text) {
             case "profile": {
                 String userId = event.getSource().getUserId();
@@ -464,4 +474,6 @@ public class KitchenSinkController {
             this.uri = uri;
         }
     }
+
+
 }

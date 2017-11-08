@@ -10,8 +10,10 @@ import java.nio.file.Path;
 @SpringBootApplication
 public class YoutubeLineBotApplication {
 	static Path downloadedContentDir;
+	static Path uploadedContentDir;
 	public static void main(String[] args) throws IOException {
-		downloadedContentDir = Files.createTempDirectory("line-bot");
+		downloadedContentDir = Files.createTempDirectory("downloadedVideo");
+		uploadedContentDir = Files.createTempDirectory("uploadedAudio");
 		SpringApplication.run(YoutubeLineBotApplication.class, args);
 	}
 }
