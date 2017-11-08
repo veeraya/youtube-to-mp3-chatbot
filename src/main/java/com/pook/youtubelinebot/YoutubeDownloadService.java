@@ -55,8 +55,8 @@ public class YoutubeDownloadService {
         printError(p);
         p.waitFor();
 
-        uploadFileToS3(downloadedContentDir.toString() + "/" + mp3FileName, mp3FileName);
-        return "";
+        String mp3Link = uploadFileToS3(downloadedContentDir.toString() + "/" + mp3FileName, mp3FileName);
+        return mp3Link;
     }
 
     private void printError(Process p) {
