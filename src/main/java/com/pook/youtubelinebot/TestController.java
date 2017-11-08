@@ -26,6 +26,6 @@ public class TestController {
 
     @GetMapping("/hello")
     public String hello(@PathParam("link") String link) throws IOException {
-        return "hello";
+        return "helloworld";
     }
 }
