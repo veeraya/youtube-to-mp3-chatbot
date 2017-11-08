@@ -1,16 +1,14 @@
 package ytgrabber;
 
-import com.pook.youtubelinebot.YoutubeDownloadService;
+import com.pook.youtubelinebot.YoutubeUrlUtil;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -96,7 +94,7 @@ public class YTWrapper {
         DownloadResource links = new DownloadResource();
 
         try {
-            String vidId = extractVidIdFromUrl(vidIdOrUrl);
+            String vidId = YoutubeUrlUtil.getYoutubeVideoId(vidIdOrUrl);
             logger.info("Extracted video id: [{}]", vidId);
             URL url = new URL("http://www.youtube.com/get_video_info?video_id=" + vidId);
             inStream = url.openStream();
@@ -132,8 +130,6 @@ public class YTWrapper {
                 if (index >= 0) {
                     type = type.substring(0, index);
                 }
-
-                String fileName = title + "." + getExtension(type);
                 String ul = urlParameters.get("url") + "&signature=" + urlParameters.get("sig");
                 ul = URLDecoder.decode(ul, "UTF-8");
                 links.addLink(ul, getQuality(quality), getExtension(type));
@@ -151,24 +147,5 @@ public class YTWrapper {
             }
         }
         return links;
-    }
-
-    public static String extractVidIdFromUrl(String youtubeUrl) {
-        if (youtubeUrl.startsWith("https://youtu.be")) {
-            String[] urlParts = youtubeUrl.split("/");
-            return urlParts[urlParts.length - 1];
-        } else if (youtubeUrl.contains("youtube")) {
-            URL url = null;
-            try {
-                url = new URL(youtubeUrl);
-            } catch (MalformedURLException e) {
-                return youtubeUrl;
-            }
-            String queryString = url.getQuery();
-            String[] queryParts = queryString.split("&");
-            String rawId = Arrays.stream(queryParts).filter(part -> part.startsWith("v=")).findAny().orElseGet(() -> youtubeUrl);
-            return rawId.replace("v=", "");
-        }
-        return  youtubeUrl;
     }
 }

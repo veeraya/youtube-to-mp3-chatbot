@@ -43,9 +43,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -217,7 +217,7 @@ public class KitchenSinkController {
         String text = content.getText();
 
         log.info("Got text message from {}: {}", replyToken, text);
-        if (text.contains("youtu")) {
+        if (YoutubeUrlUtil.containsYoutubeUrl(text)) {
             try {
                 String downloadLink = youtubeDownloadService.getMp3LinkFromVideo(text);
                 this.replyText(replyToken, downloadLink);
