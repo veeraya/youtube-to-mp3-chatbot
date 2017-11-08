@@ -38,6 +38,7 @@ public class YoutubeDownloadService {
 
     public String getLinkFromVideo(String youtubeLink) throws IOException, InterruptedException {
         String mp3FileName = getMp3FileName(youtubeLink);
+        logger.info("MP3 name: " + mp3FileName);
         Path downloadedContentDir = YoutubeLineBotApplication.downloadedContentDir != null ? YoutubeLineBotApplication.downloadedContentDir : Files.createTempDirectory("downloadedVideo");
         String command = getBaseYoutubeDlCommand(youtubeLink, downloadedContentDir.toString());
         logger.info("Running process: [{}]", command);
