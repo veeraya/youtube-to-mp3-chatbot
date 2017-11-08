@@ -217,15 +217,15 @@ public class KitchenSinkController {
             throws Exception {
         String text = content.getText();
 
-        log.info("Got text message with token {} from {} {}: {}", replyToken, event.getSource().getSenderId(), event.getSource().getUserId(), text);
+        log.info("Got text message with token {} from {}: {}", replyToken, event.getSource().getSenderId(), text);
         if (YoutubeUrlUtil.containsYoutubeUrl(text)) {
             this.replyText(replyToken, "Converting... Please wait...");
             try {
-                String downloadLink = youtubeDownloadService.getMp3LinkFromVideo(text);
-                this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage(downloadLink)));
+                YoutubeLineBotApplication.youtubeWorkQueue.put(new YoutubeWorkUnit(event.getSource().getUserId(), text));
             } catch (Exception e) {
                 this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage(e.getMessage())));
             }
+            return;
         }
         switch (text) {
             case "profile": {

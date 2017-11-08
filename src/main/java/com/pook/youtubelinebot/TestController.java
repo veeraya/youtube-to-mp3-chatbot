@@ -19,9 +19,9 @@ public class TestController {
     YoutubeDownloadService youtubeDownloadService;
 
     @GetMapping("/test")
-    public String test(@RequestParam("url") String url) throws IOException {
-        String downloadLink = youtubeDownloadService.getMp3LinkFromVideo(url);
-        return downloadLink;
+    public String test(@RequestParam("url") String url) throws IOException, InterruptedException {
+        YoutubeLineBotApplication.youtubeWorkQueue.put(new YoutubeWorkUnit("some user id", url));
+        return "";
     }
 
     @GetMapping("/hello")
