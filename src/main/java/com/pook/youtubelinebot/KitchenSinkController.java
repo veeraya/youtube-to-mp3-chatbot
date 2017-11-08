@@ -19,6 +19,7 @@ package com.pook.youtubelinebot;
 import com.google.common.io.ByteStreams;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
@@ -216,13 +217,14 @@ public class KitchenSinkController {
             throws Exception {
         String text = content.getText();
 
-        log.info("Got text message from {}: {}", replyToken, text);
+        log.info("Got text message with token {} from {} {}: {}", replyToken, event.getSource().getSenderId(), event.getSource().getUserId(), text);
         if (YoutubeUrlUtil.containsYoutubeUrl(text)) {
+            this.replyText(replyToken, "Converting... Please wait...");
             try {
                 String downloadLink = youtubeDownloadService.getMp3LinkFromVideo(text);
-                this.replyText(replyToken, downloadLink);
+                this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage(downloadLink)));
             } catch (Exception e) {
-                this.replyText(replyToken, e.getMessage());
+                this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage(e.getMessage())));
             }
         }
         switch (text) {
