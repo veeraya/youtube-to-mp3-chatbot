@@ -1,3 +1,5 @@
+server:
+  port: 5000
 line.bot:
   channel-token: 'Put Your Channel Token Here.'
   channel-secret: 'Put Your Channel Secret Here.'
