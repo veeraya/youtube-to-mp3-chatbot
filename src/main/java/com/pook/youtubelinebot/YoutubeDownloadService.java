@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import ytgrabber.DownloadLink;
 import ytgrabber.DownloadResource;
 import ytgrabber.YTWrapper;
@@ -13,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 /**
  * Created by pook on 6/11/2017.
@@ -23,16 +25,67 @@ public class YoutubeDownloadService {
 
     AmazonS3Service amazonS3Service;
 
-    public static void main(String... args) throws IOException {
+    public static void main(String... args) throws IOException, InterruptedException {
         AmazonS3Service amazonS3Service = new AmazonS3Service();
         YoutubeDownloadService s = new YoutubeDownloadService(amazonS3Service);
-        s.getMp3LinkFromVideo("https://youtu.be/1guOQX6_UPo");
-
+        s.getLinkFromVideo("https://youtu.be/1guOQX6_UPo");
     }
 
     @Autowired
     public YoutubeDownloadService(AmazonS3Service amazonS3Service) {
         this.amazonS3Service = amazonS3Service;
+    }
+
+    public String getLinkFromVideo(String youtubeLink) throws IOException, InterruptedException {
+        String mp3FileName = getMp3FileName(youtubeLink);
+        Path downloadedContentDir = YoutubeLineBotApplication.downloadedContentDir != null ? YoutubeLineBotApplication.downloadedContentDir : Files.createTempDirectory("downloadedVideo");
+        String command = getBaseYoutubeDlCommand(youtubeLink, downloadedContentDir.toString());
+        logger.info("Running process: [{}]", command);
+        final Process p = Runtime.getRuntime().exec(command);
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = null;
+        try {
+            while ((line = input.readLine()) != null) {
+                logger.info("FFMPEG: {}", line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        p.waitFor();
+
+        uploadFileToS3(downloadedContentDir.toString() + "/" + mp3FileName, mp3FileName);
+        return "";
+    }
+
+    private String getMp3FileName(String youtubeLink) throws IOException, InterruptedException {
+        String command = getYoutubeDlFileNameCommand(youtubeLink);
+        logger.info("Running process: [{}]", command);
+        final Process p = Runtime.getRuntime().exec(command);
+        p.waitFor();  // wait for process to finish then continue.
+
+        BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String videoFileName = "";
+        String output;
+        while ((output = bri.readLine()) != null) {
+            videoFileName += output;
+        }
+        String[] nameParts = videoFileName.split("\\.");
+        return String.join(".", Arrays.copyOfRange(nameParts, 0, nameParts.length - 1)) + ".mp3";
+    }
+
+    private String getYoutubeDlFileNameCommand(String youtubeLink) {
+        return getBaseYoutubeDlCommand(youtubeLink, "") + " --get-filename";
+    }
+
+    private String getBaseYoutubeDlCommand(String youtubeLink, String downloadPath) {
+        String outputFormat = "%(title)s.%(ext)s";
+        String command = "youtube-dl " + youtubeLink + " -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 ";
+        if (StringUtils.isEmpty(downloadPath)) {
+            command += "-o " + outputFormat;
+        } else {
+            command += "-o " + downloadPath + "/" + outputFormat;
+        }
+        return command;
     }
 
     public String getMp3LinkFromVideo(String youtubeLink) throws IOException {
@@ -135,10 +188,12 @@ public class YoutubeDownloadService {
             public void run() {
                 logger.info("Running process: []", process);
                 BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                StringBuilder sb = new StringBuilder();
                 String line = null;
                 try {
                     while ((line = input.readLine()) != null) {
-                        logger.info("FFMPEG: {}", line);
+                        logger.info("Process out: {}", line);
+                        sb.append(line);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

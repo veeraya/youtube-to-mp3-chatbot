@@ -25,7 +25,7 @@ public class ConversionWorkerThread implements Runnable  {
                 YoutubeWorkUnit workUnit = YoutubeLineBotApplication.youtubeWorkQueue.take();
                 logger.info("Received work unit: [{}]", workUnit);
                 try {
-                    String downloadLink = youtubeDownloadService.getMp3LinkFromVideo(workUnit.getText());
+                    String downloadLink = youtubeDownloadService.getLinkFromVideo(workUnit.getText());
                     this.lineMessagingClient.pushMessage(new PushMessage(workUnit.getUser(), new TextMessage(downloadLink)));
                 } catch (Exception e) {
                     this.lineMessagingClient.pushMessage(new PushMessage(workUnit.getUser(), new TextMessage(e.getMessage())));
