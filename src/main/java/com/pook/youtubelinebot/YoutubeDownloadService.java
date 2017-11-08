@@ -52,10 +52,23 @@ public class YoutubeDownloadService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        printError(p);
         p.waitFor();
 
         uploadFileToS3(downloadedContentDir.toString() + "/" + mp3FileName, mp3FileName);
         return "";
+    }
+
+    private void printError(Process p) {
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        String line = null;
+        try {
+            while ((line = input.readLine()) != null) {
+                logger.info("ERROR: {}", line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String getMp3FileName(String youtubeLink) throws IOException, InterruptedException {
