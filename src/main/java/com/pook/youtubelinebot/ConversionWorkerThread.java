@@ -49,15 +49,17 @@ public class ConversionWorkerThread implements Runnable {
 
     private void logMetric(YoutubeWorkUnit workUnit, PROCESSING_STATUS processingStatus) {
         try {
-            if (!userMap.containsKey(workUnit.getUser())) {
+            String userId = workUnit.getUser();
+            if (!userMap.containsKey(userId)) {
                 lineMessagingClient
-                        .getProfile(workUnit.getUser())
+                        .getProfile(userId)
                         .whenComplete((profile, throwable) -> {
-                            userMap.put(workUnit.getUser(), profile.getDisplayName());
-                        });
+                            userMap.put(userId, profile.getDisplayName());
+                        })
+                        .join();
             }
             List<Message> messages = new ArrayList<>();
-            messages.add(new TextMessage("Received message from " + userMap.getOrDefault(workUnit.getUser(), "unknown") + " : " + workUnit.getText()));
+            messages.add(new TextMessage("Received message from " + userMap.getOrDefault(userId, userId) + " : " + workUnit.getText()));
             messages.add(new TextMessage("Status: " + processingStatus));
             this.lineMessagingClient.pushMessage(new PushMessage("U1f9161c159e4273595aef9def40a8618", messages));
         } catch (Exception e) {
