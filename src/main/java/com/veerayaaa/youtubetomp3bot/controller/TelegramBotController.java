@@ -1,7 +1,7 @@
 package com.veerayaaa.youtubetomp3bot.controller;
 
 import com.veerayaaa.youtubetomp3bot.YouTubeToMp3BotApp;
-import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
+import com.veerayaaa.youtubetomp3bot.model.ConversionWorkUnit;
 import com.veerayaaa.youtubetomp3bot.util.YoutubeUrlUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class TelegramBotController extends TelegramLongPollingBot {
                     logger.error("Error while calling execute: {}", e);
                 }
                 try {
-                    YouTubeToMp3BotApp.youtubeWorkQueue.put(new YoutubeWorkUnit(update.getMessage().getChatId().toString(), update.getMessage().getText(), YoutubeWorkUnit.Source.TELEGRAM));
+                    YouTubeToMp3BotApp.youtubeWorkQueue.put(new ConversionWorkUnit(update.getMessage().getChatId().toString(), update.getMessage().getText(), ConversionWorkUnit.Source.TELEGRAM));
                 } catch (InterruptedException e) {
                     logger.error("Error while putting to queue: {}", e);
                 }

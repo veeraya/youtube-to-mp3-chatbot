@@ -5,7 +5,7 @@ import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.veerayaaa.youtubetomp3bot.YouTubeToMp3BotApp;
-import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
+import com.veerayaaa.youtubetomp3bot.model.ConversionWorkUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +36,10 @@ public class YouTubeConversionThread implements Runnable {
     public void run() {
         try {
             while (true) {
-                YoutubeWorkUnit workUnit = YouTubeToMp3BotApp.youtubeWorkQueue.take();
+                ConversionWorkUnit workUnit = YouTubeToMp3BotApp.youtubeWorkQueue.take();
                 logger.info("Received work unit: [{}]", workUnit);
                 try {
-                    String downloadLink = youtubeDownloadService.getLinkFromVideo(workUnit.getText());
+                    String downloadLink = youtubeDownloadService.getLinkFromVideo(workUnit.getYoutubeLink());
                     reply(workUnit, downloadLink);
 
                 } catch (Exception e) {
@@ -52,7 +52,7 @@ public class YouTubeConversionThread implements Runnable {
         }
     }
 
-    private void reply(YoutubeWorkUnit workUnit, String message) {
+    private void reply(ConversionWorkUnit workUnit, String message) {
         switch (workUnit.getSource()) {
             case LINE:
                 this.lineMessagingClient.pushMessage(new PushMessage(workUnit.getReplyTo(), new TextMessage(message)));
@@ -72,7 +72,7 @@ public class YouTubeConversionThread implements Runnable {
         }
     }
 
-    private void logUsage(YoutubeWorkUnit workUnit, PROCESSING_STATUS processingStatus) {
+    private void logUsage(ConversionWorkUnit workUnit, PROCESSING_STATUS processingStatus) {
         try {
             String userId = workUnit.getReplyTo();
             if (!userMap.containsKey(userId)) {
@@ -84,7 +84,7 @@ public class YouTubeConversionThread implements Runnable {
                         .join();
             }
             List<Message> messages = new ArrayList<>();
-            messages.add(new TextMessage("Received message from " + userMap.getOrDefault(userId, userId) + " : " + workUnit.getText()));
+            messages.add(new TextMessage("Received message from " + userMap.getOrDefault(userId, userId) + " : " + workUnit.getYoutubeLink()));
             messages.add(new TextMessage("Status: " + processingStatus));
             this.lineMessagingClient.pushMessage(new PushMessage("U1f9161c159e4273595aef9def40a8618", messages));
         } catch (Exception e) {

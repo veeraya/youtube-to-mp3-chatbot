@@ -1,14 +1,14 @@
 package com.veerayaaa.youtubetomp3bot.model;
 
-public class YoutubeWorkUnit {
+public class ConversionWorkUnit {
     private String replyTo;
-    private String text;
+    private String youtubeLink;
     private Source source;
 
 
-    public YoutubeWorkUnit(String replyTo, String text, Source source) {
+    public ConversionWorkUnit(String replyTo, String youtubeLink, Source source) {
         this.replyTo = replyTo;
-        this.text = text;
+        this.youtubeLink = youtubeLink;
         this.source = source;
     }
 
@@ -20,16 +20,16 @@ public class YoutubeWorkUnit {
         this.replyTo = replyTo;
     }
 
-    public String getText() {
-        return text;
+    public String getYoutubeLink() {
+        return youtubeLink;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setYoutubeLink(String youtubeLink) {
+        this.youtubeLink = youtubeLink;
     }
 
     public String toString() {
-        return replyTo + " : " + text;
+        return replyTo + " : " + youtubeLink;
     }
 
     public Source getSource() {

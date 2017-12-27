@@ -1,7 +1,7 @@
 package com.veerayaaa.youtubetomp3bot;
 
 import com.veerayaaa.youtubetomp3bot.controller.TelegramBotController;
-import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
+import com.veerayaaa.youtubetomp3bot.model.ConversionWorkUnit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -23,7 +23,7 @@ import java.util.concurrent.BlockingQueue;
 public class YouTubeToMp3BotApp implements ApplicationListener<ContextRefreshedEvent> {
 
 	public static Path downloadedContentDir;
-	public static BlockingQueue<YoutubeWorkUnit> youtubeWorkQueue;
+	public static BlockingQueue<ConversionWorkUnit> youtubeWorkQueue;
 
 	private static final String TMP_DOWNLOADED_VID_PATH = "/tmp/donwloadedVideo";
 
