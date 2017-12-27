@@ -20,7 +20,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 @SpringBootApplication
-public class YoutubeLineBotApplication implements ApplicationListener<ContextRefreshedEvent> {
+public class YouTubeToMp3BotApp implements ApplicationListener<ContextRefreshedEvent> {
 
 	public static Path downloadedContentDir;
 	public static BlockingQueue<YoutubeWorkUnit> youtubeWorkQueue;
@@ -32,7 +32,7 @@ public class YoutubeLineBotApplication implements ApplicationListener<ContextRef
 		youtubeWorkQueue = new ArrayBlockingQueue<>(10);
 		ApiContextInitializer.init();
 
-		ConfigurableApplicationContext context = SpringApplication.run(YoutubeLineBotApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(YouTubeToMp3BotApp.class, args);
 	}
 
 	private static void initializeDownloadPath() {

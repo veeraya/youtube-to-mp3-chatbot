@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.pook</groupId>
-	<artifactId>youtube-line-bot</artifactId>
+	<artifactId>YouTube-To-MP3-Bot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 

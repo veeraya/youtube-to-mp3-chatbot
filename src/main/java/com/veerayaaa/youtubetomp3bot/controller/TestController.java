@@ -1,7 +1,7 @@
 package com.veerayaaa.youtubetomp3bot.controller;
 
 import com.veerayaaa.youtubetomp3bot.service.YoutubeDownloadService;
-import com.veerayaaa.youtubetomp3bot.YoutubeLineBotApplication;
+import com.veerayaaa.youtubetomp3bot.YouTubeToMp3BotApp;
 import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class TestController {
 
     @GetMapping("/test")
     public String test(@RequestParam("url") String url) throws IOException, InterruptedException {
-        YoutubeLineBotApplication.youtubeWorkQueue.put(new YoutubeWorkUnit("some user id", url, YoutubeWorkUnit.Source.LINE));
+        YouTubeToMp3BotApp.youtubeWorkQueue.put(new YoutubeWorkUnit("some user id", url, YoutubeWorkUnit.Source.LINE));
         return "";
     }
 

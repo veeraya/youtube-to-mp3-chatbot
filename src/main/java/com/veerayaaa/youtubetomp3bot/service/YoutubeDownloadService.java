@@ -1,6 +1,6 @@
 package com.veerayaaa.youtubetomp3bot.service;
 
-import com.veerayaaa.youtubetomp3bot.YoutubeLineBotApplication;
+import com.veerayaaa.youtubetomp3bot.YouTubeToMp3BotApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class YoutubeDownloadService {
     public String getLinkFromVideo(String youtubeLink) throws IOException, InterruptedException {
         String mp3FileName = getMp3FileName(youtubeLink);
         logger.info("MP3 file name: " + mp3FileName);
-        String downloadedContentDir = YoutubeLineBotApplication.downloadedContentDir != null ? YoutubeLineBotApplication.downloadedContentDir.toAbsolutePath().toString() : Files.createTempDirectory("downloadedVideo").toAbsolutePath().toString();
+        String downloadedContentDir = YouTubeToMp3BotApp.downloadedContentDir != null ? YouTubeToMp3BotApp.downloadedContentDir.toAbsolutePath().toString() : Files.createTempDirectory("downloadedVideo").toAbsolutePath().toString();
         String command = getBaseYoutubeDlCommand(youtubeLink, downloadedContentDir);
         logger.info("Running process: [{}]", command);
         final Process p = Runtime.getRuntime().exec(command);

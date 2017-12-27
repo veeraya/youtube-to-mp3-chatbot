@@ -30,7 +30,7 @@ public class CustomMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        String downloadedContentUri = YoutubeLineBotApplication.downloadedContentDir
+        String downloadedContentUri = YouTubeToMp3BotApp.downloadedContentDir
                 .toUri().toASCIIString();
         log.info("downloaded dir: {}", downloadedContentUri);
         registry.addResourceHandler("/downloaded/**")

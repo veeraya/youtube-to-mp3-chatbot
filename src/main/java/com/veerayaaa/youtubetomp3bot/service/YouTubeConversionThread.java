@@ -4,7 +4,7 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
-import com.veerayaaa.youtubetomp3bot.YoutubeLineBotApplication;
+import com.veerayaaa.youtubetomp3bot.YouTubeToMp3BotApp;
 import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class YouTubeConversionThread implements Runnable {
     public void run() {
         try {
             while (true) {
-                YoutubeWorkUnit workUnit = YoutubeLineBotApplication.youtubeWorkQueue.take();
+                YoutubeWorkUnit workUnit = YouTubeToMp3BotApp.youtubeWorkQueue.take();
                 logger.info("Received work unit: [{}]", workUnit);
                 try {
                     String downloadLink = youtubeDownloadService.getLinkFromVideo(workUnit.getText());

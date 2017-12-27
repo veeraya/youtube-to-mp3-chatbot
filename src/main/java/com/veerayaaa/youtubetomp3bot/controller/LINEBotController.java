@@ -28,7 +28,7 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-import com.veerayaaa.youtubetomp3bot.YoutubeLineBotApplication;
+import com.veerayaaa.youtubetomp3bot.YouTubeToMp3BotApp;
 import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
 import com.veerayaaa.youtubetomp3bot.util.YoutubeUrlUtil;
 import org.slf4j.Logger;
@@ -115,7 +115,7 @@ public class LINEBotController {
         if (YoutubeUrlUtil.containsYoutubeUrl(text)) {
             this.replyText(replyToken, "Converting... Please wait...");
             try {
-                YoutubeLineBotApplication.youtubeWorkQueue.put(new YoutubeWorkUnit(event.getSource().getUserId(), text, YoutubeWorkUnit.Source.LINE));
+                YouTubeToMp3BotApp.youtubeWorkQueue.put(new YoutubeWorkUnit(event.getSource().getUserId(), text, YoutubeWorkUnit.Source.LINE));
             } catch (Exception e) {
                 this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage(e.getMessage())));
             }
