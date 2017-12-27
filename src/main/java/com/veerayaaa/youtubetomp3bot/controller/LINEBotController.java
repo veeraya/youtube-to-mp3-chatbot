@@ -115,7 +115,7 @@ public class LINEBotController {
         if (YoutubeUrlUtil.containsYoutubeUrl(text)) {
             this.replyText(replyToken, "Converting... Please wait...");
             try {
-                YoutubeLineBotApplication.youtubeWorkQueue.put(new YoutubeWorkUnit(event.getSource().getUserId(), text));
+                YoutubeLineBotApplication.youtubeWorkQueue.put(new YoutubeWorkUnit(event.getSource().getUserId(), text, YoutubeWorkUnit.Source.LINE));
             } catch (Exception e) {
                 this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage(e.getMessage())));
             }

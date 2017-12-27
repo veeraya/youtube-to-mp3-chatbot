@@ -4,9 +4,15 @@ line.bot:
   channel-token: 'Put Your Channel Token Here.'
   channel-secret: 'Put Your Channel Secret Here.'
   handler.path: /callback
+telegram:
+  botUserName: 'Put Your Telegram Bot Username Here'
+  botToken: 'Put Your Telegram Bot Token Here'
 s3:
   mp3BucketName: youtube-converted-mp3
   mp3BucketRegion: ap-southeast-1
+thread:
+  conversion.size: 4
+  conversion.maxPoolSize: 4
 logging:
   level:
     org.apache.http.wire: INFO

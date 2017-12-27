@@ -9,7 +9,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 
 /**
@@ -35,8 +34,8 @@ public class YoutubeDownloadService {
     public String getLinkFromVideo(String youtubeLink) throws IOException, InterruptedException {
         String mp3FileName = getMp3FileName(youtubeLink);
         logger.info("MP3 file name: " + mp3FileName);
-        Path downloadedContentDir = YoutubeLineBotApplication.downloadedContentDir != null ? YoutubeLineBotApplication.downloadedContentDir : Files.createTempDirectory("downloadedVideo");
-        String command = getBaseYoutubeDlCommand(youtubeLink, downloadedContentDir.toString());
+        String downloadedContentDir = YoutubeLineBotApplication.downloadedContentDir != null ? YoutubeLineBotApplication.downloadedContentDir.toAbsolutePath().toString() : Files.createTempDirectory("downloadedVideo").toAbsolutePath().toString();
+        String command = getBaseYoutubeDlCommand(youtubeLink, downloadedContentDir);
         logger.info("Running process: [{}]", command);
         final Process p = Runtime.getRuntime().exec(command);
         BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -46,12 +45,11 @@ public class YoutubeDownloadService {
                 logger.info("FFMPEG: {}", line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error: {}", e);
         }
         printError(p);
         p.waitFor();
-
-        String mp3Link = uploadFileToS3(downloadedContentDir.toString() + "/" + mp3FileName, mp3FileName);
+        String mp3Link = uploadFileToS3(downloadedContentDir + "/" + mp3FileName, mp3FileName);
         return mp3Link;
     }
 
@@ -63,7 +61,7 @@ public class YoutubeDownloadService {
                 logger.info("ERROR: {}", line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error: {}", e);
         }
     }
 

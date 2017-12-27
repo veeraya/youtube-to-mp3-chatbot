@@ -9,23 +9,26 @@ import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by pook on 8/11/2017.
- */
-@Component
-public class ConversionWorkerThread implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(ConversionWorkerThread.class);
+@Scope("prototype")
+@Service
+public class YouTubeConversionThread implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(YouTubeConversionThread.class);
     @Autowired
     private YoutubeDownloadService youtubeDownloadService;
     @Autowired
     private LineMessagingClient lineMessagingClient;
+    @Autowired
+    private TelegramReplyClient telegramReplyClient;
 
     public static Map<String, String> userMap = new ConcurrentHashMap<>();
 
@@ -37,11 +40,11 @@ public class ConversionWorkerThread implements Runnable {
                 logger.info("Received work unit: [{}]", workUnit);
                 try {
                     String downloadLink = youtubeDownloadService.getLinkFromVideo(workUnit.getText());
-                    this.lineMessagingClient.pushMessage(new PushMessage(workUnit.getUser(), new TextMessage(downloadLink)));
-                    logMetric(workUnit, PROCESSING_STATUS.SUCCESS);
+                    reply(workUnit, downloadLink);
+
                 } catch (Exception e) {
-                    this.lineMessagingClient.pushMessage(new PushMessage(workUnit.getUser(), new TextMessage(e.getMessage())));
-                    logMetric(workUnit, PROCESSING_STATUS.FAIL);
+                    reply(workUnit, e.getMessage());
+                    //logUsage(workUnit, PROCESSING_STATUS.FAIL); // send me a LINE msg for each conversion request
                 }
             }
         } catch (InterruptedException e) {
@@ -49,9 +52,29 @@ public class ConversionWorkerThread implements Runnable {
         }
     }
 
-    private void logMetric(YoutubeWorkUnit workUnit, PROCESSING_STATUS processingStatus) {
+    private void reply(YoutubeWorkUnit workUnit, String message) {
+        switch (workUnit.getSource()) {
+            case LINE:
+                this.lineMessagingClient.pushMessage(new PushMessage(workUnit.getReplyTo(), new TextMessage(message)));
+                break;
+            case TELEGRAM:
+                SendMessage sendMessage = new SendMessage()
+                        .setChatId(workUnit.getReplyTo())
+                        .setText(message);
+                try {
+                    telegramReplyClient.execute(sendMessage);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void logUsage(YoutubeWorkUnit workUnit, PROCESSING_STATUS processingStatus) {
         try {
-            String userId = workUnit.getUser();
+            String userId = workUnit.getReplyTo();
             if (!userMap.containsKey(userId)) {
                 lineMessagingClient
                         .getProfile(userId)

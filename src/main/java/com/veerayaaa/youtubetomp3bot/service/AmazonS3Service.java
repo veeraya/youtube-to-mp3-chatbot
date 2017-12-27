@@ -27,14 +27,6 @@ public class AmazonS3Service {
         this.s3.setRegion(region);
     }
 
-    public S3Object downloadFile(String bucketName, String key) {
-        logger.info("Downloading file [{}] from bucket [{}]", key, bucketName);
-        S3Object object = this.s3.getObject(new GetObjectRequest(bucketName, key));
-        logger.info("Content-Type: "  + object.getObjectMetadata().getContentType());
-        return object;
-
-    }
-
     public String uploadMp3(String uploadedFileName, InputStream inputStream) {
         return uploadFile(this.mp3BucketName, uploadedFileName, inputStream);
     }

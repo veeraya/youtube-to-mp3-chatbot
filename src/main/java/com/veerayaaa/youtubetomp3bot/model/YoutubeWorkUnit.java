@@ -1,23 +1,23 @@
 package com.veerayaaa.youtubetomp3bot.model;
 
-/**
- * Created by pook on 8/11/2017.
- */
 public class YoutubeWorkUnit {
-    private String user;
+    private String replyTo;
     private String text;
+    private Source source;
 
-    public YoutubeWorkUnit(String user, String text) {
-        this.user = user;
+
+    public YoutubeWorkUnit(String replyTo, String text, Source source) {
+        this.replyTo = replyTo;
         this.text = text;
+        this.source = source;
     }
 
-    public String getUser() {
-        return user;
+    public String getReplyTo() {
+        return replyTo;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
     }
 
     public String getText() {
@@ -29,6 +29,18 @@ public class YoutubeWorkUnit {
     }
 
     public String toString() {
-        return user + " : " + text;
+        return replyTo + " : " + text;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public enum Source {
+        LINE, TELEGRAM
     }
 }

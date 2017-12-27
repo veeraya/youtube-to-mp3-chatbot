@@ -23,7 +23,7 @@ public class TestController {
 
     @GetMapping("/test")
     public String test(@RequestParam("url") String url) throws IOException, InterruptedException {
-        YoutubeLineBotApplication.youtubeWorkQueue.put(new YoutubeWorkUnit("some user id", url));
+        YoutubeLineBotApplication.youtubeWorkQueue.put(new YoutubeWorkUnit("some user id", url, YoutubeWorkUnit.Source.LINE));
         return "";
     }
 
