@@ -15,8 +15,8 @@ Currently support these platforms:
 Screenshot
 -----------
 
-|                LINE               |                  Telegram                 |
-|:---------------------------------:|:-----------------------------------------:|
+|            LINE            |              Telegram              |
+|:--------------------------:|:----------------------------------:|
 | ![LINE](docs/img/LINE.gif) | ![Telegram](docs/img/telegram.gif) |
 
 
