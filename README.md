@@ -1,6 +1,8 @@
 YouTube to MP3 Chat Bot
 ========================
 
+[![Build Status](https://travis-ci.org/veeraya/youtube-to-mp3-chatbot.svg?branch=master)](https://travis-ci.org/veeraya/youtube-to-mp3-chatbot)
+
 This LINE and Telegram Chat bot accepts a YouTube link, converts the video to to MP3, upload the converted MP3 to Amazon S3 and sends back the download link.
 
 The project is developed using Java and Spring Boot. [youtube-dl](https://github.com/rg3/youtube-dl) is used for video download and conversion.
