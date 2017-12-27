@@ -23,8 +23,12 @@ build/
 nbbuild/
 dist/
 nbdist/
-.nb-gradle/
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+.nb-gradle/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# Secrets
+src/main/resources/application-local.yaml
