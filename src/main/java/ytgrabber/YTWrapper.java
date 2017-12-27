@@ -1,6 +1,6 @@
 package ytgrabber;
 
-import com.pook.youtubelinebot.YoutubeUrlUtil;
+import com.veerayaaa.youtubetomp3bot.util.YoutubeUrlUtil;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
@@ -22,7 +22,8 @@ public class YTWrapper {
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(YTWrapper.class);
 
     public static void  main(String[] args) {
-        extractLinks("https://www.youtube.com/watch?v=CS9OO0S5w2k&feature=youtu.be");
+        DownloadResource resource = extractLinks("https://www.youtube.com/watch?v=2Vv-BfVoq4g");
+        System.out.println(resource.getError());
     }
 
     private static Map<String, String> getQueryMap(String query) {
