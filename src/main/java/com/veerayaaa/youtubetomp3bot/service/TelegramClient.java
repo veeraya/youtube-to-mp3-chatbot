@@ -6,11 +6,11 @@ import org.telegram.telegrambots.bots.DefaultAbsSender;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 
 @Service
-public class TelegramReplyClient extends DefaultAbsSender {
+public class TelegramClient extends DefaultAbsSender {
     @Value("${telegram.botToken}")
     private String botToken;
 
-    protected TelegramReplyClient() {
+    protected TelegramClient() {
         super(new DefaultBotOptions());
     }
 

@@ -23,7 +23,7 @@ public class TestController {
 
     @GetMapping("/test")
     public String test(@RequestParam("url") String url) throws IOException, InterruptedException {
-        YouTubeToMp3BotApp.youtubeWorkQueue.put(new ConversionWorkUnit("some user id", url, ConversionWorkUnit.Source.LINE));
+        YouTubeToMp3BotApp.conversionQueue.put(new ConversionWorkUnit("some user id", url, ConversionWorkUnit.Source.LINE));
         return "";
     }
 

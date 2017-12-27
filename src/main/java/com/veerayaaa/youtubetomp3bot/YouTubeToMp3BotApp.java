@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
@@ -23,16 +22,16 @@ import java.util.concurrent.BlockingQueue;
 public class YouTubeToMp3BotApp implements ApplicationListener<ContextRefreshedEvent> {
 
 	public static Path downloadedContentDir;
-	public static BlockingQueue<ConversionWorkUnit> youtubeWorkQueue;
+	public static BlockingQueue<ConversionWorkUnit> conversionQueue;
 
-	private static final String TMP_DOWNLOADED_VID_PATH = "/tmp/donwloadedVideo";
+	private static final String TMP_DOWNLOADED_VID_PATH = "/tmp/downloadedVideo";
 
 	public static void main(String[] args) throws IOException {
 		initializeDownloadPath();
-		youtubeWorkQueue = new ArrayBlockingQueue<>(10);
+		conversionQueue = new ArrayBlockingQueue<>(10);
 		ApiContextInitializer.init();
 
-		ConfigurableApplicationContext context = SpringApplication.run(YouTubeToMp3BotApp.class, args);
+		SpringApplication.run(YouTubeToMp3BotApp.class, args);
 	}
 
 	private static void initializeDownloadPath() {
@@ -40,7 +39,7 @@ public class YouTubeToMp3BotApp implements ApplicationListener<ContextRefreshedE
 		dir.mkdir();
 		dir.setWritable(true, false);
 		dir.setReadable(true, false);
-		downloadedContentDir = Paths.get("/tmp/downloadedVideo");
+		downloadedContentDir = Paths.get(TMP_DOWNLOADED_VID_PATH);
 	}
 
 	@Override

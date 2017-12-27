@@ -115,7 +115,7 @@ public class LINEBotController {
         if (YoutubeUrlUtil.containsYoutubeUrl(text)) {
             this.replyText(replyToken, "Converting... Please wait...");
             try {
-                YouTubeToMp3BotApp.youtubeWorkQueue.put(new ConversionWorkUnit(event.getSource().getUserId(), text, ConversionWorkUnit.Source.LINE));
+                YouTubeToMp3BotApp.conversionQueue.put(new ConversionWorkUnit(event.getSource().getUserId(), text, ConversionWorkUnit.Source.LINE));
             } catch (Exception e) {
                 this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage(e.getMessage())));
             }

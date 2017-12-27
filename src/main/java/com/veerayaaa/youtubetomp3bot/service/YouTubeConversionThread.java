@@ -28,7 +28,7 @@ public class YouTubeConversionThread implements Runnable {
     @Autowired
     private LineMessagingClient lineMessagingClient;
     @Autowired
-    private TelegramReplyClient telegramReplyClient;
+    private TelegramClient telegramClient;
 
     public static Map<String, String> userMap = new ConcurrentHashMap<>();
 
@@ -36,7 +36,7 @@ public class YouTubeConversionThread implements Runnable {
     public void run() {
         try {
             while (true) {
-                ConversionWorkUnit workUnit = YouTubeToMp3BotApp.youtubeWorkQueue.take();
+                ConversionWorkUnit workUnit = YouTubeToMp3BotApp.conversionQueue.take();
                 logger.info("Received work unit: [{}]", workUnit);
                 try {
                     String downloadLink = youtubeDownloadService.getLinkFromVideo(workUnit.getYoutubeLink());
@@ -62,7 +62,7 @@ public class YouTubeConversionThread implements Runnable {
                         .setChatId(workUnit.getReplyTo())
                         .setText(message);
                 try {
-                    telegramReplyClient.execute(sendMessage);
+                    telegramClient.execute(sendMessage);
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }

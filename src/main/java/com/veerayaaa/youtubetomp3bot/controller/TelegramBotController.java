@@ -39,7 +39,7 @@ public class TelegramBotController extends TelegramLongPollingBot {
                     logger.error("Error while calling execute: {}", e);
                 }
                 try {
-                    YouTubeToMp3BotApp.youtubeWorkQueue.put(new ConversionWorkUnit(update.getMessage().getChatId().toString(), update.getMessage().getText(), ConversionWorkUnit.Source.TELEGRAM));
+                    YouTubeToMp3BotApp.conversionQueue.put(new ConversionWorkUnit(update.getMessage().getChatId().toString(), update.getMessage().getText(), ConversionWorkUnit.Source.TELEGRAM));
                 } catch (InterruptedException e) {
                     logger.error("Error while putting to queue: {}", e);
                 }
