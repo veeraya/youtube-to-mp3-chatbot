@@ -1,9 +1,11 @@
-package com.pook.youtubelinebot;
+package com.veerayaaa.youtubetomp3bot.service;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
+import com.veerayaaa.youtubetomp3bot.YoutubeLineBotApplication;
+import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

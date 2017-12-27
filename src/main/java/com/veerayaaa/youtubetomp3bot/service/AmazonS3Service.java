@@ -1,4 +1,4 @@
-package com.pook.youtubelinebot;
+package com.veerayaaa.youtubetomp3bot.service;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.regions.Region;
@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.net.URL;
 
-/**
- * Created by pook on 30/9/2017.
- */
 @Service
 @ConfigurationProperties(prefix="s3")
 public class AmazonS3Service {

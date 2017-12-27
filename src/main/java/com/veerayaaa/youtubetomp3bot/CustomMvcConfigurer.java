@@ -14,8 +14,9 @@
  * under the License.
  */
 
-package com.pook.youtubelinebot;
+package com.veerayaaa.youtubetomp3bot;
 
+import com.veerayaaa.youtubetomp3bot.controller.LINEBotController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 
 @Configuration
-public class KitchenSinkWebMvcConfigurer extends WebMvcConfigurerAdapter {
-    private static final Logger log = LoggerFactory.getLogger(KitchenSinkController.class);
+public class CustomMvcConfigurer extends WebMvcConfigurerAdapter {
+    private static final Logger log = LoggerFactory.getLogger(LINEBotController.class);
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 

@@ -1,5 +1,7 @@
-package com.pook.youtubelinebot;
+package com.veerayaaa.youtubetomp3bot;
 
+import com.veerayaaa.youtubetomp3bot.model.YoutubeWorkUnit;
+import com.veerayaaa.youtubetomp3bot.service.ConversionWorkerThread;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -13,8 +15,9 @@ import java.util.concurrent.BlockingQueue;
 
 @SpringBootApplication
 public class YoutubeLineBotApplication {
-	static Path downloadedContentDir;
-	static BlockingQueue<YoutubeWorkUnit> youtubeWorkQueue;
+	public static Path downloadedContentDir;
+	public static BlockingQueue<YoutubeWorkUnit> youtubeWorkQueue;
+
 	public static void main(String[] args) throws IOException {
 		File dir = new File("/tmp/donwloadedVideo");
 		dir.mkdir();

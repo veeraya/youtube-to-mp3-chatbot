@@ -1,4 +1,4 @@
-package com.pook.youtubelinebot;
+package com.veerayaaa.youtubetomp3bot.model;
 
 /**
  * Created by pook on 8/11/2017.
