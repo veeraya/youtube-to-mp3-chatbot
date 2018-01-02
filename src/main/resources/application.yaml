@@ -11,8 +11,8 @@ s3:
   mp3BucketName: youtube-converted-mp3
   mp3BucketRegion: ap-southeast-1
 thread:
-  conversion.size: 4
-  conversion.maxPoolSize: 4
+  conversion.size: 1
+  conversion.maxPoolSize: 1
 logging:
   level:
     org.apache.http.wire: INFO
