@@ -43,6 +43,8 @@ public class YouTubeConversionThread implements Runnable {
                     reply(workUnit, downloadLink);
 
                 } catch (Exception e) {
+                    logger.error("Error converting or replying: {}", e);
+                    logger.info("Replying with error message: {}", e.getMessage());
                     reply(workUnit, e.getMessage());
                     //logUsage(workUnit, PROCESSING_STATUS.FAIL); // send me a LINE msg for each conversion request
                 }
