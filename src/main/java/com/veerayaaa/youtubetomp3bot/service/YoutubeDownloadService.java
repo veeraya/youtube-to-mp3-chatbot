@@ -91,7 +91,7 @@ public class YoutubeDownloadService {
 
     private String getBaseYoutubeDlCommand(String youtubeLink, String downloadPath) {
         String outputFormat = "%(title)s.%(ext)s";
-        String command = "youtube-dl " + youtubeLink + " -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 ";
+        String command = "youtube-dl " + youtubeLink + " -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --no-playlist";
         if (StringUtils.isEmpty(downloadPath)) {
             command += "-o " + outputFormat;
         } else {
