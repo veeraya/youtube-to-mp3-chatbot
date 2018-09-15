@@ -72,17 +72,21 @@ public class YoutubeDownloadService {
         p.waitFor();  // wait for process to finish then continue.
 
         BufferedReader bri = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String videoFileName = "";
-        String output;
-        while ((output = bri.readLine()) != null) {
-            videoFileName += output;
+        String videoFileName = bri.readLine();
+        /* Ugly hack to prevent people from downloading large file.
+        * TODO: revisit the logic and remove hardcoding
+        * */
+        String duration = bri.readLine();
+
+        if (duration.split(":").length > 2 || Integer.parseInt(duration.split(":")[0]) > 10) {
+            throw new RuntimeException("Error: Please download a video shorter than 10 minutes");
         }
         String[] nameParts = videoFileName.split("\\.");
         return String.join(".", Arrays.copyOfRange(nameParts, 0, nameParts.length - 1)) + ".mp3";
     }
 
     private String getYoutubeDlFileNameCommand(String youtubeLink) {
-        return getBaseYoutubeDlCommand(youtubeLink, "") + " --get-filename";
+        return getBaseYoutubeDlCommand(youtubeLink, "") + " --get-filename --get-duration";
     }
 
     private String getBaseYoutubeDlCommand(String youtubeLink, String downloadPath) {
