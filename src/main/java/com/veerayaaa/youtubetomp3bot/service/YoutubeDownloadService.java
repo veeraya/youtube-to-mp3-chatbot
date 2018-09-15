@@ -24,6 +24,7 @@ public class YoutubeDownloadService {
         AmazonS3Service amazonS3Service = new AmazonS3Service();
         YoutubeDownloadService s = new YoutubeDownloadService(amazonS3Service);
         s.getLinkFromVideo("https://youtu.be/1guOQX6_UPo");
+        //s.getLinkFromVideo("https://youtu.be/1guOQX6_UPo");
     }
 
     @Autowired
@@ -91,7 +92,7 @@ public class YoutubeDownloadService {
 
     private String getBaseYoutubeDlCommand(String youtubeLink, String downloadPath) {
         String outputFormat = "%(title)s.%(ext)s";
-        String command = "youtube-dl " + youtubeLink + " -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --no-playlist";
+        String command = "youtube-dl " + youtubeLink + " -f bestaudio --extract-audio --audio-format mp3 --audio-quality 0 --no-playlist ";
         if (StringUtils.isEmpty(downloadPath)) {
             command += "-o " + outputFormat;
         } else {
