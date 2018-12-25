@@ -117,7 +117,7 @@ public class LINEBotController {
             try {
                 YouTubeToMp3BotApp.conversionQueue.put(new ConversionWorkUnit(event.getSource().getUserId(), text, ConversionWorkUnit.Source.LINE));
             } catch (Exception e) {
-                this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage(e.getMessage())));
+                this.lineMessagingClient.pushMessage(new PushMessage(event.getSource().getSenderId(), new  TextMessage("Error while converting file: " + e.getMessage())));
             }
             return;
         } else {
